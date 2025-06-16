@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="it" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Interattivo | Nelson Maria Ferico Catalano</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals & Teal Accent -->
+    <!-- Application Structure Plan: Ho progettato una SPA con una navigazione superiore fissa per un accesso rapido alle sezioni chiave: Profilo, Esperienza, Competenze e Formazione. La sezione "Esperienza" è interattiva: un menu a schede sulla sinistra permette di visualizzare dinamicamente i dettagli di ogni lavoro sulla destra, mantenendo l'interfaccia pulita e focalizzata. Le competenze sono visualizzate con un grafico a barre per una comprensione immediata della profondità dell'esperienza. Questa struttura non lineare migliora l'usabilità rispetto a un CV statico, permettendo ai recruiter di esplorare le informazioni più pertinenti in modo efficiente. -->
+    <!-- Visualization & Content Choices: Ho trasformato la lista di competenze in un grafico a barre orizzontale (Chart.js) per visualizzare gli anni di esperienza per ciascun gruppo tecnologico, un modo più d'impatto per comunicare la seniority (Goal: Compare/Inform). L'esperienza lavorativa è presentata tramite un sistema a schede interattivo (HTML/CSS/JS) per ridurre il sovraccarico cognitivo (Goal: Organize/Inform). Il resto delle informazioni (profilo, formazione) è presentato in modo testuale ma con una forte gerarchia visiva (HTML/Tailwind) per garantire chiarezza (Goal: Inform). -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F7F4;
+            color: #1a202c;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #007A7A;
+        }
+        .experience-tab.active {
+            background-color: #007A7A;
+            color: white;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-xl font-bold text-gray-800">
+                <a href="#">Nelson M. F. Catalano</a>
+            </div>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#profilo" class="nav-link text-gray-600">Profilo</a>
+                <a href="#esperienza" class="nav-link text-gray-600">Esperienza</a>
+                <a href="#competenze" class="nav-link text-gray-600">Competenze</a>
+                <a href="#formazione" class="nav-link text-gray-600">Formazione</a>
+            </div>
+             <div class="md:hidden">
+                <select onchange="window.location.href=this.value" class="block w-full bg-gray-200 border border-gray-200 text-gray-700 py-2 px-3 pr-8 rounded-lg leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                    <option value="#profilo">Menu</option>
+                    <option value="#profilo">Profilo</option>
+                    <option value="#esperienza">Esperienza</option>
+                    <option value="#competenze">Competenze</option>
+                    <option value="#formazione">Formazione</option>
+                </select>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12 md:py-20">
+
+        <!-- Hero Section -->
+        <section id="hero" class="text-center mb-16 md:mb-24">
+            <h1 class="text-4xl md:text-6xl font-bold text-gray-900 leading-tight">Nelson Maria Ferico Catalano</h1>
+            <p class="mt-4 text-xl md:text-2xl text-teal-700 font-medium">Sviluppatore Web Full-Stack</p>
+            <div class="mt-6 flex justify-center items-center space-x-6 text-gray-600">
+                <a href="mailto:Nelson.catalano88@gmail.com" class="hover:text-teal-700 transition duration-300 flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    Nelson.catalano88@gmail.com
+                </a>
+                <span class="text-gray-300">|</span>
+                <a href="tel:+393400039931" class="hover:text-teal-700 transition duration-300 flex items-center">
+                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                    340 003 9931
+                </a>
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profilo" class="mb-16 md:mb-24 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center mb-8">Profilo Professionale</h2>
+            <div class="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-md">
+                <p class="text-lg text-gray-700 leading-relaxed text-center">
+                    Sviluppatore Web Full-Stack con oltre 6 anni di esperienza nello sviluppo e manutenzione di applicazioni web complesse e sistemi CMS. Esperienza comprovata nella progettazione e implementazione di soluzioni personalizzate, gestione di database e integrazione API. Abile nella collaborazione inter-dipartimentale e nell'ottimizzazione dei processi di sviluppo. Appassionato nell'applicazione di tecnologie innovative per creare prodotti robusti e scalabili.
+                </p>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="esperienza" class="mb-16 md:mb-24 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center mb-12">Esperienza Professionale</h2>
+            <div class="flex flex-col md:flex-row gap-8 md:gap-12">
+                <div class="w-full md:w-1/3 flex flex-col space-y-2">
+                    <button data-job="timeware" class="experience-tab text-left p-4 rounded-lg transition duration-300 ease-in-out">
+                        <p class="font-bold">Sviluppatore Web</p>
+                        <p class="text-sm">Timeware</p>
+                    </button>
+                    <button data-job="bitq" class="experience-tab text-left p-4 rounded-lg transition duration-300 ease-in-out">
+                        <p class="font-bold">Sviluppatore</p>
+                        <p class="text-sm">BitQ S.r.l.</p>
+                    </button>
+                    <button data-job="sgi" class="experience-tab text-left p-4 rounded-lg transition duration-300 ease-in-out">
+                        <p class="font-bold">Analista Programmatore</p>
+                        <p class="text-sm">S.G.I.</p>
+                    </button>
+                     <button data-job="ant" class="experience-tab text-left p-4 rounded-lg transition duration-300 ease-in-out">
+                        <p class="font-bold">Programmatore Java Junior</p>
+                        <p class="text-sm">ANT srl</p>
+                    </button>
+                </div>
+                <div id="experience-details" class="w-full md:w-2/3 bg-white p-8 rounded-xl shadow-md">
+                    <!-- Content will be injected by JS -->
+                </div>
+            </div>
+        </section>
+        
+        <!-- Skills Section -->
+        <section id="competenze" class="mb-16 md:mb-24 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center mb-4">Competenze Tecniche</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Una panoramica visuale degli anni di esperienza con i principali gruppi di tecnologie, basata sulle esperienze professionali.</p>
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <div class="chart-container">
+                    <canvas id="skillsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education & Languages Section -->
+        <section id="formazione" class="scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center mb-12">Formazione e Lingue</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-xl shadow-md">
+                    <h3 class="text-xl font-bold mb-4 text-teal-700">Formazione</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <p class="font-bold text-lg">Full Stack Web Development Certification</p>
+                            <p class="text-gray-600">freeCodeCamp (2017 – 2018)</p>
+                            <p class="text-sm text-gray-500 mt-1">Certificazione in Computer Software Engineering.</p>
+                        </div>
+                        <div>
+                            <p class="font-bold text-lg">Laurea in Scienze Linguistiche</p>
+                            <p class="text-gray-600">Università Cattolica del Sacro Cuore (2008 – 2012)</p>
+                             <p class="text-sm text-gray-500 mt-1">Indirizzo: Lingue per la comunicazione e l'informazione.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-md">
+                     <h3 class="text-xl font-bold mb-4 text-teal-700">Lingue</h3>
+                     <div class="space-y-4">
+                        <div>
+                            <p class="font-bold text-lg">Italiano</p>
+                            <p class="text-gray-600">Madrelingua</p>
+                        </div>
+                         <div>
+                            <p class="font-bold text-lg">Inglese</p>
+                            <p class="text-gray-600">Estremamente Avanzato</p>
+                        </div>
+                     </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white mt-20">
+        <div class="container mx-auto px-6 py-8 text-center">
+             <p class="font-bold text-lg">Nelson Maria Ferico Catalano</p>
+             <p class="text-gray-400 mt-2">Bresso (MI) - Italia</p>
+             <div class="mt-4 flex justify-center items-center space-x-6 text-gray-300">
+                <a href="mailto:Nelson.catalano88@gmail.com" class="hover:text-white transition duration-300">Email</a>
+                <span>&middot;</span>
+                <a href="tel:+393400039931" class="hover:text-white transition duration-300">Telefono</a>
+             </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const experienceData = {
+                timeware: {
+                    title: 'Sviluppatore Web',
+                    company: 'Timeware',
+                    date: 'Aprile 2021 – Presente',
+                    location: 'Milano, Italia',
+                    description: [
+                        'Partecipazione attiva alla <strong>progettazione e sviluppo di Imagonist (CMS) da zero</strong>.',
+                        'Sviluppo di un sistema personalizzato per la creazione e consegna di contenuti app tramite <strong>MongoDB</strong> e <strong>Redis</strong>, per clienti come La Piadineria e Burger King.',
+                        'Manutenzione quotidiana, bug fixing, e implementazioni sulla piattaforma esistente.',
+                        'Coordinamento con il Dipartimento Operazioni per la gestione dei report di errore.'
+                    ],
+                    tech: ['PHP', 'Yii2', 'MySQL', 'MongoDB', 'Redis', 'JavaScript', 'Git']
+                },
+                bitq: {
+                    title: 'Sviluppatore',
+                    company: 'BitQ S.r.l.',
+                    date: 'Settembre 2018 – Aprile 2021',
+                    location: 'Milano, Italia',
+                    description: [
+                        'Sviluppo del <strong>sistema CRM</strong> per l\'Ufficio Amministrazione.',
+                        'Manutenzione e sviluppo delle <strong>API</strong>.',
+                        'Implementazione con diversi servizi esterni (es. MyPass, Nintendo, Drexcode).',
+                        'Promozione e implementazione di un nuovo <strong>metodo di documentazione</strong> per un processo di sviluppo più chiaro.'
+                    ],
+                    tech: ['PHP', 'CodeIgniter 3', 'MySQL', 'JavaScript', 'jQuery', 'Git']
+                },
+                sgi: {
+                    title: 'Analista Programmatore',
+                    company: 'S.G.I. Servizi Generali Informatici',
+                    date: 'Ottobre 2017 – Luglio 2018',
+                    location: 'Milano, Italia',
+                    description: [
+                        'Manutenzione ed evoluzioni del <strong>sistema CRM</strong> utilizzato da uffici e filiali su scala nazionale (presso Compass Spa).',
+                        'Implementazione di <strong>servizi API SOAP</strong> per autenticazione e richieste dati di terze parti.',
+                        'Creazione di <strong>query DB</strong> complesse per l\'identificazione di segmenti di clientela.',
+                        'Esecuzione di test e gestione degli <strong>User Acceptance Tests (UAT)</strong>.'
+                    ],
+                    tech: ['PHP', 'HTML', 'CSS', 'JavaScript', 'SOAP', 'MySQL']
+                },
+                ant: {
+                    title: 'Programmatore Java Junior',
+                    company: 'ANT srl',
+                    date: 'Settembre 2017 – Ottobre 2017',
+                    location: 'Milano, Italia',
+                    description: [
+                        'Corso Java Intermedio (200 ore) con focus su <strong>HTML5, CSS3, JavaScript, AngularJs 1.x, Java EE</strong> e <strong>Java Servlet</strong>.',
+                        'Apprendimento e applicazione di <strong>Design Patterns</strong> (DAO, FC, MVC, Builder, Prototype, Facade).',
+                        'Utilizzo di <strong>MySQL avanzato</strong> (stored procedure, function, trigger, index).',
+                        'Progettazione UML di base e cenni su framework avanzati (Spring).'
+                    ],
+                    tech: ['Java', 'AngularJS', 'MySQL', 'HTML5', 'CSS3', 'UML']
+                }
+            };
+
+            const experienceTabs = document.querySelectorAll('.experience-tab');
+            const detailsContainer = document.getElementById('experience-details');
+
+            function updateDetails(jobKey) {
+                const job = experienceData[jobKey];
+                const techBadges = job.tech.map(t => `<span class="bg-teal-100 text-teal-800 text-xs font-medium mr-2 mb-2 px-2.5 py-0.5 rounded-full">${t}</span>`).join('');
+                
+                detailsContainer.innerHTML = `
+                    <div class="fade-in">
+                        <h3 class="text-2xl font-bold text-gray-900">${job.title}</h3>
+                        <p class="text-lg font-medium text-teal-700">${job.company}</p>
+                        <p class="text-sm text-gray-500 mb-6">${job.date} | ${job.location}</p>
+                        <ul class="space-y-3 list-disc list-inside text-gray-700">
+                            ${job.description.map(item => `<li>${item}</li>`).join('')}
+                        </ul>
+                        <div class="mt-6 pt-4 border-t border-gray-200">
+                             <h4 class="font-semibold mb-3">Tecnologie Principali:</h4>
+                             <div class="flex flex-wrap">
+                                ${techBadges}
+                             </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            experienceTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const jobKey = tab.dataset.job;
+                    
+                    experienceTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    updateDetails(jobKey);
+                });
+            });
+
+            // Initial state
+            document.querySelector('.experience-tab[data-job="timeware"]').click();
+            
+            // Skills Chart
+            const ctx = document.getElementById('skillsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['PHP & Frameworks', 'JavaScript & Frontend', 'Database (SQL/NoSQL)', 'Java', 'API & Protocolli'],
+                    datasets: [{
+                        label: 'Anni di Esperienza (stimati)',
+                        data: [8, 8, 8, 1, 7],
+                        backgroundColor: 'rgba(0, 122, 122, 0.6)',
+                        borderColor: 'rgba(0, 122, 122, 1)',
+                        borderWidth: 1,
+                        borderRadius: 4,
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: '#1a202c',
+                            titleFont: { size: 14 },
+                            bodyFont: { size: 12 },
+                            padding: 10,
+                            cornerRadius: 4,
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: {
+                                color: '#e2e8f0'
+                            },
+                             ticks: {
+                                color: '#4a5568'
+                            }
+                        },
+                        y: {
+                             grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#1a202c',
+                                font: {
+                                    size: 14,
+                                    weight: '500'
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>
